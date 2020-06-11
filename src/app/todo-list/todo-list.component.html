@@ -1,0 +1,13 @@
+<div class="blockTodoList">
+    <h3>TodoList</h3>
+    <div class="content"><ul>
+        <li *ngFor = "let todo of allData">
+        <a  [routerLink]="[{ outlets:{todos:[todo.id]}}]" routerLinkActive="active_route">
+            {{todo.title}}({{getLength(todo)}})
+        </a><button class="btnDelete" (click)="deleteList(todo.id)">X</button></li></ul>
+</div>
+<div class="blockAddList">
+    <div><input placeholder="New list..." [(ngModel)]="textTodos" class="inputTextAdd"></div>
+    <div><button (click)="addTodolist()" class="btnAdd" [disabled]="!textTodos">Create</button></div>
+</div>
+</div>

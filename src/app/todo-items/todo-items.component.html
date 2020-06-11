@@ -1,0 +1,59 @@
+<div class="blockTodos">
+  <div class="blockInputSearch">
+    <input
+      type="text"
+      placeholder="Search..."
+      [(ngModel)]="searchString"
+      class="inputText"
+    />
+  </div>
+  <div>
+    <div>
+      <label
+        ><input
+          type="radio"
+          value="todosAll"
+          name="radioTodos"
+          [(ngModel)]="radioTodos"
+          (change)="onInputChangeYes()"
+        />All</label
+      >
+    </div>
+    <div>
+      <label
+        ><input
+          type="radio"
+          value="todosUndone"
+          name="radioTodos"
+          [(ngModel)]="radioTodos"
+          (change)="onInputChangeNo()"
+        />Undone</label
+      >
+    </div>
+  </div>
+  <ul>
+    <li *ngFor="let todo of todosFilter | todosFilter: searchString">
+      <span [class.completed]="todo.completed">
+        <input
+          type="checkbox"
+          [checked]="todo.completed"
+          (change)="onChange(todo.id)"
+        />{{ todo.title }}
+      </span>
+      <button (click)="deleteTodo(todo.id)" class="btnDelete">X</button>
+    </li>
+  </ul>
+  <div class="blockInputAdd">
+    <form name="addTodosForm">
+      <input
+        type="text"
+        name="todos"
+        placeholder="Add todo..."
+        [(ngModel)]="title"
+        (keydown.enter)="addTodo()"
+        class="inputText"
+        required
+      />
+    </form>
+  </div>
+</div>
