@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
+import { LocalService } from './localStorage.service';
 
 export interface Todo {
   id: number;
@@ -19,7 +20,7 @@ export interface TodoList {
 export class TodosService {
   allData = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private localService: LocalService) {}
 
   fetchTodos(): Observable<TodoList[]> {
     //   return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos?_limit=10')
@@ -58,6 +59,21 @@ export class TodosService {
           { id: 5, title: 'Learn TypeScript', completed: false },
         ],
       },
-    ]).pipe(tap((todos) => (this.allData = todos)));
+    ]).pipe(map(allData => {
+      const savedData = this.localService.load()
+      if (savedData) {
+       return savedData;
+      }
+      this.localService.save(allData)
+      return allData
+      }),tap((todos) => (this.allData = todos)))
+    // .pipe(map(allData => {
+    //   const savedData = this.localService.load()
+    //   if (savedData) {
+    //    return savedData;
+    //   }
+    //   this.localService.save(allData)
+    //   return allData
+    //   }));
   }
 }

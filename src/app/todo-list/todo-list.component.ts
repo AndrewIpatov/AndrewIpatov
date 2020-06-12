@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TodosService, TodoList } from '../api/todos.service';
+import { LocalService } from '../api/localStorage.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -10,7 +11,7 @@ export class TodoListComponent implements OnInit {
   allData: TodoList[] = [];
   textTodos: string = '';
 
-  constructor(public todosService: TodosService) {}
+  constructor(public todosService: TodosService,public localService: LocalService) {}
 
   addTodolist() {
     const todos = {
@@ -18,11 +19,12 @@ export class TodoListComponent implements OnInit {
       id: Date.now(),
       data: [],
     };
-    this.allData.push(todos), (this.textTodos = '');
+    this.allData.push(todos), this.localService.save(this.allData), (this.textTodos = '');
   }
 
   deleteList(id) {
     this.allData = this.allData.filter((list) => list.id !== id);
+    this.localService.save(this.allData)
   }
 
   getLength(item: TodoList) {

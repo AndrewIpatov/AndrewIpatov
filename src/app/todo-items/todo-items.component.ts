@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodosService, Todo } from '../api/todos.service';
 import { ActivatedRoute } from '@angular/router';
+import { LocalService } from '../api/localStorage.service';
 
 @Component({
   selector: 'app-todo-items',
@@ -17,7 +18,8 @@ export class TodoItemsComponent implements OnInit {
 
   constructor(
     public todosService: TodosService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public localService: LocalService
   ) {}
 
   addTodo() {
@@ -30,18 +32,21 @@ export class TodoItemsComponent implements OnInit {
         completed: false,
       };
       this.todosFilter.push(todo);
+      this.localService.save(this.todosService.allData);
       this.title = '';
     }
   }
 
   deleteTodo(id: number) {
-    this.todosFilter = this.todosFilter.filter((todo) => todo.id !== id);
-    this.todos = this.todos.filter((todo) => todo.id !== id);
+    const index =  this.todosFilter.findIndex((todo) => todo.id === id)
+    this.todosFilter.splice(index, 1);
+    this.localService.save(this.todosService.allData);
   }
 
   onChange(id: number) {
     const index = this.todosFilter.findIndex((todo) => todo.id === id);
     this.todosFilter[index].completed = !this.todosFilter[index].completed;
+    this.localService.save(this.todosService.allData);
   }
   onInputChangeYes() {
     this.todosFilter = [...this.todos];
