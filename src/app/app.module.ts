@@ -15,8 +15,8 @@ import { TodosSearch } from '../app/api/todosSearch';
 import { environment } from '../environments/environment';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/list', pathMatch: 'full' },
-  { path: 'list', component: TodoListComponent },
+  // { path: '', redirectTo: '/list', pathMatch: 'full' },
+  { path: '', component: TodoListComponent },
   { path: ':id', component: TodoItemsComponent, outlet: 'todos' },
 ];
 
