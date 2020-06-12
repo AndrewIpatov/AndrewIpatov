@@ -23,7 +23,6 @@ export class TodosService {
   constructor(private localService: LocalService) {}
 
   fetchTodos(): Observable<TodoList[]> {
-    //   return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos?_limit=10')
     return of([
       {
         id: 1,
@@ -59,21 +58,16 @@ export class TodosService {
           { id: 5, title: 'Learn TypeScript', completed: false },
         ],
       },
-    ]).pipe(map(allData => {
-      const savedData = this.localService.load()
-      if (savedData) {
-       return savedData;
-      }
-      this.localService.save(allData)
-      return allData
-      }),tap((todos) => (this.allData = todos)))
-    // .pipe(map(allData => {
-    //   const savedData = this.localService.load()
-    //   if (savedData) {
-    //    return savedData;
-    //   }
-    //   this.localService.save(allData)
-    //   return allData
-    //   }));
+    ]).pipe(
+      map((allData) => {
+        const savedData = this.localService.load();
+        if (savedData) {
+          return savedData;
+        }
+        this.localService.save(allData);
+        return allData;
+      }),
+      tap((todos) => (this.allData = todos))
+    );
   }
 }

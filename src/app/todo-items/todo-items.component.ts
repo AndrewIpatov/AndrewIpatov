@@ -38,7 +38,7 @@ export class TodoItemsComponent implements OnInit {
   }
 
   deleteTodo(id: number) {
-    const index =  this.todosFilter.findIndex((todo) => todo.id === id)
+    const index = this.todosFilter.findIndex((todo) => todo.id === id);
     this.todosFilter.splice(index, 1);
     this.localService.save(this.todosService.allData);
   }
